@@ -14,7 +14,7 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QPushButton" name="iniciarServidor">
+   <widget class="QPushButton" name="toggleServidor">
     <property name="geometry">
      <rect>
       <x>170</x>
@@ -40,7 +40,7 @@
      <string>Iniciar Servidor</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label">
+   <widget class="QLabel" name="ipServidor">
     <property name="geometry">
      <rect>
       <x>100</x>
@@ -56,7 +56,10 @@
      </font>
     </property>
     <property name="text">
-     <string>IP del servidor: 255.255.255.255</string>
+     <string/>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
     </property>
    </widget>
   </widget>
