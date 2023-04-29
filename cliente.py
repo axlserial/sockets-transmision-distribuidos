@@ -6,7 +6,7 @@ class Cliente(QtWidgets.QMainWindow):
     def __init__(self):
         super(Cliente, self).__init__()
         
-        self.client = Client()
+        self.client = Cliente()
 
         uic.loadUi('UI/cliente.ui', self)
         self.show()
