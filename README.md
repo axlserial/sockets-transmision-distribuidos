@@ -17,7 +17,6 @@ pip install -r requirements.txt
 
 ## Construido con
 
-[PixiJS](https://pixijs.com/) - Librería de JavaScript para crear gráficos 2D y 3D en HTML5
 [PyQt5](https://pypi.org/project/PyQt5/) - Librería de Python para crear interfaces gráficas de usuario
 
 ## Autores
