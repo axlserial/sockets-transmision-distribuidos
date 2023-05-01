@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Cliente</string>
   </property>
   <property name="animated">
    <bool>true</bool>

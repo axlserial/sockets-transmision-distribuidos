@@ -2,6 +2,7 @@ from Sockets.cliente import Client
 from PyQt5 import QtWidgets, uic
 from Dialog import Dialog
 import sys
+import os
 
 
 class Cliente(QtWidgets.QMainWindow):
@@ -68,6 +69,7 @@ class Cliente(QtWidgets.QMainWindow):
         # Recibimos el archivo
         if result:
             Dialog("Archivo recibido", self).exec_()
+            os.startfile(f'{os.getcwd()}/Recived/{filename}')
         else:
             Dialog("El archivo solicitado no existe", self).exec_()
 
