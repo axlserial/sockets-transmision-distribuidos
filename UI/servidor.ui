@@ -13,6 +13,17 @@
   <property name="windowTitle">
    <string>Servidor</string>
   </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>socket.png</normaloff>
+    <normalon>socket.png</normalon>
+    <disabledoff>socket.png</disabledoff>
+    <disabledon>socket.png</disabledon>
+    <activeoff>socket.png</activeoff>
+    <activeon>socket.png</activeon>
+    <selectedoff>socket.png</selectedoff>
+    <selectedon>socket.png</selectedon>socket.png</iconset>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QPushButton" name="toggleServidor">
     <property name="geometry">
