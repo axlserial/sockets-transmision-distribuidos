@@ -4,6 +4,7 @@ from _thread import *
 
 def get_ip_address():
     """Obtiene la dirección IP de la máquina"""
+    #return "192.168.195.179"
 
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     s.connect(("8.8.8.8", 80))
@@ -21,27 +22,36 @@ class Server:
         return f"{get_ip_address()}:{self.puerto}"
 
     def _multi_threaded_client(self, connection: socket.socket):
-        # Mensaje de conexión
-        connection.send(str.encode("Servidor conectado"))
-
         # Espera de mensajes del cliente
         while True:
             # Recibimos el nombre del archivo que solicita el cliente
-            filename = connection.recv(2048).decode("utf-8")
-
-            # Si el cliente no envía un nombre de archivo, se cierra la conexión
+            try:
+                filename = connection.recv(1024).decode("utf-8")
+            except:
+                break
+        
+            # Cliente desconectado
             if not filename:
                 break
+
+            # Imprimimos el nombre del archivo solicitado
+            print(f"El cliente solicita el archivo: {filename}")
 
             # Abrimos el archivo solicitado por el cliente
             try:
                 with open(f"Files/{filename}", "rb") as file:
                     # Enviamos el archivo al cliente
-                    connection.send(file.read())
+                    line = file.read(1024)
+                    while line:
+                        connection.send(line)
+                        line = file.read(1024)
+
+                    # Enviamos una bandera de finalización de archivo
+                    connection.send(b"<END>")
 
             # Si el archivo no existe, se envía un mensaje de error al cliente
             except FileNotFoundError:
-                connection.send(str.encode("El archivo no existe"))
+                connection.send(b"<NOEXIST>")
 
         # Cerramos la conexión
         connection.close()
@@ -50,7 +60,7 @@ class Server:
         self.servidor = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
         # Asignamos una dirección IP y un puerto al socket
-        self.servidor.bind(("localhost", self.puerto))
+        self.servidor.bind((get_ip_address(), self.puerto))
 
         # Ponemos el socket en modo escucha
         self.servidor.listen(5)

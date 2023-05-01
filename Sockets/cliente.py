@@ -13,23 +13,28 @@ class Client:
         self.client_socket.connect((ip, port))
     
     def receiveMessage(self):
-        return self.client_socket.recv(102400).decode()
+        return self.client_socket.recv(1024).decode()
     
     def receive(self):
-        return self.client_socket.recv(102400)
+        return self.client_socket.recv(1024)
     
     def receiveFile(self, filename: str):
-        # Recibimos el mensaje del servidor
-        message = self.receive()
+        # Recibimos el archivo del servidor
+        data = self.client_socket.recv(1024)
 
-        # Verificamos si el archivo existe
-        if message.decode() == "El archivo no existe":
+        # Salidos si el archivo no existe
+        if data == b"<NOEXIST>":
             return False
 
-        # Recibimos el archivo del servidor
         with open(filename, "wb") as file:
-            file.write(message)
-        
+            while data:
+                if data.endswith(b"<END>"):
+                    file.write(data[:-5])
+                    break
+                else:
+                    file.write(data)
+                    data = self.client_socket.recv(1024)
+
         return True
     
     def sendMessage(self, message: str):
