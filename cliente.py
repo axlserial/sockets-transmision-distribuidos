@@ -3,32 +3,37 @@ from PyQt5 import QtWidgets, uic
 from Dialog import Dialog
 import sys
 
+
 class Cliente(QtWidgets.QMainWindow):
     def __init__(self):
         super(Cliente, self).__init__()
-        
+
         self.client = Client()
 
         # Cargar la interfaz de usuario
-        uic.loadUi('UI/cliente.ui', self)
+        uic.loadUi("UI/cliente.ui", self)
 
         # Bind de los botones
         self.button_ip.clicked.connect(self.iniciar_con)
         self.solicitar_btn.clicked.connect(self.solicitar_archivo)
-        
+
         self.show()
 
     def iniciar_con(self):
         # IP del servidor
         ip = self.input_ip.text()
-        
+
         # Campo vacio
         if ip == "":
             Dialog("Ingrese una dirección IP", self).exec_()
             return
 
         # obtenemos la ip y el puerto
-        ip, port = ip.split(":")
+        try:
+            ip, port = ip.split(":")
+        except:
+            Dialog("Ingrese una dirección IP válida (IP:PUERTO)", self).exec_()
+            return
 
         # Conectamos con el servidor
         try:
@@ -37,11 +42,37 @@ class Cliente(QtWidgets.QMainWindow):
             Dialog("No se pudo conectar con el servidor", self).exec_()
             return
 
+        # Mostramos el mensaje de conexión exitosa
+        Dialog("Conexión exitosa", self).exec_()
+        self.group_solicitar.setEnabled(True)
+        self.solicitar_btn.setEnabled(True)
+        self.input_file_name.setEnabled(True)
+
     def solicitar_archivo(self):
-        pass
+        # Nombre del archivo
+        filename = self.input_file_name.text()
+
+        # Campo vacio
+        if filename == "":
+            Dialog(
+                "Ingrese un nombre de archivo con extensión (archivo.ext)", self
+            ).exec_()
+            return
+
+        # Enviamos el nombre del archivo al servidor
+        self.client.sendMessage(filename)
+
+        # Recibimos la respuesta del servidor
+        result = self.client.receiveFile(f'Recived/{filename}')
+
+        # Recibimos el archivo
+        if result:
+            Dialog("Archivo recibido", self).exec_()
+        else:
+            Dialog("El archivo solicitado no existe", self).exec_()
 
 
-if __name__ == '__main__':
-	app = QtWidgets.QApplication(sys.argv)
-	window = Cliente()
-	sys.exit(app.exec_())
+if __name__ == "__main__":
+    app = QtWidgets.QApplication(sys.argv)
+    window = Cliente()
+    sys.exit(app.exec_())

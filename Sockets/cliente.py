@@ -24,8 +24,6 @@ class Client:
 
         # Verificamos si el archivo existe
         if message.decode() == "El archivo no existe":
-            print(message.decode())
-            self.client_socket.close()
             return False
 
         # Recibimos el archivo del servidor
