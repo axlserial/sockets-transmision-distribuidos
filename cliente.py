@@ -45,9 +45,15 @@ class Cliente(QtWidgets.QMainWindow):
 
         # Mostramos el mensaje de conexión exitosa
         Dialog("Conexión exitosa", self).exec_()
+
+        # Habilitamos los botones de solicitar archivo
         self.group_solicitar.setEnabled(True)
         self.solicitar_btn.setEnabled(True)
         self.input_file_name.setEnabled(True)
+
+        # Deshabilitamos el botón de conectar
+        self.button_ip.setEnabled(False)
+        self.input_ip.setEnabled(False)
 
     def solicitar_archivo(self):
         # Nombre del archivo
@@ -64,12 +70,12 @@ class Cliente(QtWidgets.QMainWindow):
         self.client.sendMessage(filename)
 
         # Recibimos la respuesta del servidor
-        result = self.client.receiveFile(f'Recived/{filename}')
+        result = self.client.receiveFile(f"Recived/{filename}")
 
         # Recibimos el archivo
         if result:
             Dialog("Archivo recibido", self).exec_()
-            os.startfile(f'{os.getcwd()}/Recived/{filename}')
+            os.startfile(f"{os.getcwd()}/Recived/{filename}")
         else:
             Dialog("El archivo solicitado no existe", self).exec_()
 
