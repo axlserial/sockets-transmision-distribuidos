@@ -6,9 +6,7 @@ class Dialog(QDialog):
 
         self.setWindowTitle("Mensaje")
 
-        QBtn = QDialogButtonBox.Ok | QDialogButtonBox.Cancel
-
-        self.buttonBox = QDialogButtonBox(QBtn)
+        self.buttonBox = QDialogButtonBox(QDialogButtonBox.Ok)
         self.buttonBox.accepted.connect(self.accept)
         self.buttonBox.rejected.connect(self.reject)
 
